@@ -11,13 +11,13 @@ ENV PORT=34197 \
     RCON_PORT=27015 \
     VERSION=0.16.51 \
     SHA1=127e7ff484ab263b13615d6114013ce0a66ac929 \
-    SAVES=/factorio/saves \
-    CONFIG=/factorio/config \
-    MODS=/factorio/mods \
-    SCENARIOS=/factorio/scenarios \
-    SCRIPTOUTPUT=/factorio/script-output
+    SAVES=/opt/factorio/saves \
+    CONFIG=/opt/factorio/config \
+    MODS=/opt/factorio/mods \
+    SCENARIOS=/opt/factorio/scenarios \
+    SCRIPTOUTPUT=/opt/factorio/script-output
 
-RUN mkdir -p /opt /factorio && \
+RUN mkdir -p /opt /opt/factorio && \
     apk add --update --no-cache pwgen && \
     apk add --update --no-cache --virtual .build-deps curl && \
     curl -sSL https://www.factorio.com/get-download/$VERSION/headless/linux64 \
@@ -33,9 +33,9 @@ RUN mkdir -p /opt /factorio && \
     apk del .build-deps && \
     addgroup -g $PGID -S $GROUP && \
     adduser -u $PUID -G $GROUP -s /bin/sh -SDH $USER && \
-    chown -R $USER:$GROUP /opt/factorio /factorio
+    chown -R $USER:$GROUP /opt/factorio
 
-VOLUME /factorio
+VOLUME [/opt/factorio/saves /opt/factorio/mods]
 
 EXPOSE $PORT/udp $RCON_PORT/tcp
 
